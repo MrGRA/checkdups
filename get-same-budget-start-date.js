@@ -9,12 +9,14 @@ const connectionString = "mongodb://localhost:27017";
 const dbName = "eubfr";
 
 async function run(dest) {
+  const client = await MongoClient.connect(
+    connectionString,
+    { useNewUrlParser: true }
+  );
+
   try {
     const write = buildWrite(dest);
-    const client = await MongoClient.connect(
-      connectionString,
-      { useNewUrlParser: true }
-    );
+
     const db = client.db(dbName);
     try {
       const cursor = await db.collection("projects").aggregate(
@@ -52,7 +54,7 @@ async function run(dest) {
 }
 
 const buildWrite = stream => {
-  const streamError = null;
+  let streamError = null;
   stream.on("error", function(err) {
     streamError = err;
   });
