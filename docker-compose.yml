@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mongodb:
     image: mongo
@@ -8,4 +8,3 @@ services:
       - ./data/dumps:/data/dumps
     ports:
       - 27017:27017
-
