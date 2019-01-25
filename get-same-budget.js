@@ -1,6 +1,4 @@
-const { finished } = require("stream");
 const fs = require("fs");
-const { promisify } = require("util");
 const MongoClient = require("mongodb").MongoClient;
 
 // Connection URL
@@ -16,35 +14,46 @@ async function run(dest) {
 
   try {
     const write = buildWrite(dest);
-
     const db = client.db(dbName);
+
     try {
-      const cursor = await db.collection("projects").aggregate(
+      const searchCount = await db.collection("projects").aggregate(
+        [
+          {
+            $match: {
+                "_source.budget.total_cost.value": { $gt: 0 }
+            }
+          },
+          {
+            $group: {
+              _id: { budget: "$_source.budget.total_cost.value" },
+              count: { $sum: 1 },
+              projects: { $push: "$_id" }
+            }
+          },
+          {
+            $match: {
+                count: { $gt: 1 }
+            }
+          },
+          {
+              $sort: { _id: -1 }
+          }          
+        ],
         {
-          $group: {
-            // Group by fields to match on (a,b)
-            _id: { budget: "$_source.budget.total_cost.value" },
-            // Count number of matching docs for the group
-            count: { $sum: 1 },
-            // Save the _id for matching docs
-            projects: { $push: "$_id" }
-          }
-        },
-        // Limit results to duplicates (more than 1 match)
-        {
-          $match: {
-            count: { $gt: 1 }
-          }
+          allowDiskUse: true
         }
       );
 
-      for (let doc = await cursor.next(); doc; doc = await cursor.next()) {
-        await write(JSON.stringify(project) + "\n");
+      for (let doc = await searchCount.next(); doc; doc = await searchCount.next()) {
+        await write(JSON.stringify(doc) + "\n");
       }
+
     } finally {
       client.close();
     }
   } catch (err) {
+    console.log(err)
     client.close();
     dest.destroy(err);
   }

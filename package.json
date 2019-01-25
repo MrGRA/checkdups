@@ -5,6 +5,11 @@
   "author": "MrGRA",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "importdata": "node import.js",
+    "get-same-budget": "node get-same-budget.js",
+    "get-same-budget-start-date": "node get-same-budget-start-date.js"
+  },
   "dependencies": {
     "event-stream": "3.3.4",
     "mongodb": "3.1.12"
