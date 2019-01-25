@@ -12,7 +12,7 @@ Requirements:
 Run:
 
 ```sh
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 See running containers:
@@ -24,10 +24,10 @@ $ docker ps
 Enter docker container with MongoDB:
 
 ```sh
-$ docker exec -it f9cd620c87ff /bin/bash
+$ docker exec -it eubfr-mongo /bin/bash
 ```
 
-Where `f9cd620c87ff` is the id of the given container on your host.
+Where `eubfr-mongo` is the name of the given container on your host on docker-compose.yml.
 
 When in the container, run `mongo` to enter [mongo shell](https://docs.mongodb.com/manual/reference/mongo-shell/).
 
