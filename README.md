@@ -43,26 +43,20 @@ Import all projects to MongoDB, locally, and perform various checks on the data.
 $ yarn
 ```
 
-or
-
-```sh
-$ npm install
-```
-
 ## Import results.ndjson to Mongo
 
 ```sh
-$ node import.js
+$ yarn import
 ```
 
 ## Check and output results of duplicated budgets
 
 ```sh
-$ node get-same-budget.js
+$ yarn get-same-budget
 ```
 
 ## Check and output results of duplicated budgets and same start date
 
 ```sh
-$ node get-same-budget-start-date.js
+$ yarn get-same-budget-start-date
 ```
