@@ -46,7 +46,7 @@ $ yarn
 ## Import results.ndjson to Mongo
 
 ```sh
-$ yarn import
+$ yarn run import
 ```
 
 ## Check and output results of duplicated budgets
